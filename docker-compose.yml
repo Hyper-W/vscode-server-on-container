@@ -8,5 +8,27 @@ services:
         - GROUP_ID=${GROUP_ID:-1000} # Your GROUP ID
     image: vscode-server
     container_name: vscode-server
+    environment:
+      - WORKDIR=${WORKDIR:-WORKDIR} # Work Directory Name
     ports:
       - "8000:8000"
+    volumes:
+      - type: volume
+        source: vscode_data
+        target: /home/${USER:-user}/.vscode
+      - type: volume
+        source: vscode_server_data
+        target: /home/${USER:-user}/.vscode-server
+      - type: volume
+        source: workdir_data
+        target: /home/${USER:-user}/${WORKDIR:-WORKDIR}
+    working_dir: /home/${USER:-user}/${WORKDIR:-WORKDIR}
+    restart: always
+
+volumes:
+    vscode_data:
+        name: vscode_data
+    vscode_server_data:
+        name: vscode_server_data
+    workdir_data:
+        name: workdir_data

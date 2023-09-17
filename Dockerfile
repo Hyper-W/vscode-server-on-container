@@ -7,6 +7,7 @@ ARG USER=user
 ARG USER_ID=1000
 ARG GROUP_ID=1000
 
+ENV WORKDIR=WORKDIR
 ENV DONT_PROMPT_WSL_INSTALL=1
 
 RUN apt-get update && apt-get install -y --no-install-recommends curl gpg apt-transport-https ca-certificates sudo \
@@ -22,4 +23,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl gpg apt-tr
 
 USER ${USER}
 
-CMD [ "code","serve-web","--host","0.0.0.0" ]
+RUN mkdir "/home/${USER}/.vscode" "/home/${USER}/.vscode-server" "/home/${USER}/${WORKDIR}"
+
+# VOLUME [ "/home/${USER}" ]
+
+VOLUME [ "/home/${USER}/.vscode" ]
+VOLUME [ "/home/${USER}/.vscode-server" ]
+VOLUME [ "/home/${USER}/${WORKDIR}" ]
+
+WORKDIR /home/${USER}/${WORKDIR}
+
+CMD [ "code","serve-web","--host","0.0.0.0","--without-connection-token" ]
