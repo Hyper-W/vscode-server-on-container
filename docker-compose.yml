@@ -1,7 +1,21 @@
 services:
+  auth-proxy:
+    build:
+      context: ./AuthProxy
+      args:
+        - USER=${USER:-user} # Your User Name
+        - PASSWORD=${PASSWORD:-Passw0rd!} # Your Password
+    image: auth-proxy
+    container_name: auth-proxy
+    environment:
+      - vscode=http://vscode-server:8000 # VSCode URL
+      - vscode_map=/ # Mapping VSCode Path
+    ports:
+      - "8000:80"
+    restart: always
   vscode-server:
     build:
-      context: .
+      context: ./VSCode
       args:
         - USER=${USER:-user} # Your User Name
         - USER_ID=${USER_ID:-1000} # Your User ID
@@ -10,8 +24,6 @@ services:
     container_name: vscode-server
     environment:
       - WORKDIR=${WORKDIR:-WORKDIR} # Work Directory Name
-    ports:
-      - "8000:8000"
     volumes:
       - type: volume
         source: vscode_data
