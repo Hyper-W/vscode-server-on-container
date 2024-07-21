@@ -6,7 +6,7 @@ services:
         - USER=${USER:-user} # Your User Name
         - USER_ID=${USER_ID:-1000} # Your User ID
         - GROUP_ID=${GROUP_ID:-1000} # Your GROUP ID
-    image: vscode-server
+    image: ghcr.io/hyper-w/vscode-server-on-container/vscode-server
     container_name: vscode-server
     environment:
       - WORKDIR=${WORKDIR:-WORKDIR} # Work Directory Name
